@@ -43,6 +43,10 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
+    const ROLE_CLIENT = 'client';
+    const ROLE_ULAMA = 'ulama';
+    const ROLE_ADMIN = 'admin';
+
     public function getJWTIdentifier()
     {
         return $this->getKey();
@@ -50,6 +54,6 @@ class User extends Authenticatable implements JWTSubject
 
     public function getJWTCustomClaims()
     {
-        return [];
+        return ['role' => $this->role];
     }
 }

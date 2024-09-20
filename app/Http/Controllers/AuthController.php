@@ -15,6 +15,7 @@ class AuthController extends Controller
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users',
             'password' => 'required|string|min:6',
+            'role' => 'required|in:client,ulama,admin',
         ]);
 
         if ($validator->fails()) {
@@ -25,6 +26,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'role' => $request->role,
         ]);
 
         return response()->json(['message' => 'User registered successfully!'], 201);

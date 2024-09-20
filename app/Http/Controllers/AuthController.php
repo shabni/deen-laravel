@@ -29,7 +29,16 @@ class AuthController extends Controller
             'role' => $request->role,
         ]);
 
-        return response()->json(['message' => 'User registered successfully!'], 201);
+        $user->assignRole($request->role);
+
+        $token = JWTAuth::fromUser($user);
+
+        // Return response
+        return response()->json([
+            'message' => 'User successfully registered',
+            'token' => $token,
+            'user' => $user
+        ], 201);
     }
 
     public function login(Request $request)

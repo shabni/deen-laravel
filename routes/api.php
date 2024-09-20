@@ -26,6 +26,25 @@ Route::post('login', [AuthController::class, 'login']);
 Route::group(['middleware' => ['jwt.auth']], function () {
     Route::post('logout', [AuthController::class, 'logout']);
 
+    Route::group(['middleware' => ['role:client']], function () {
+        Route::get('client/dashboard', function () {
+            return response()->json(['message' => 'Client dashboard']);
+        });
+    });
+
+    Route::group(['middleware' => ['role:admin']], function () {
+        Route::get('admin/dashboard', function () {
+            return response()->json(['message' => 'Admin dashboard']);
+        });
+    });
+
+    // Example: Allow both admin and ulama users
+    Route::group(['middleware' => ['role:admin,ulama']], function () {
+        Route::get('ulama/dashboard', function () {
+            return response()->json(['message' => 'Ulama dashboard']);
+        });
+    });
+
     // Other protected routes can go here
     Route::get('user', function () {
         return auth()->user();
